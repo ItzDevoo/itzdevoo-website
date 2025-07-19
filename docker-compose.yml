@@ -1,21 +1,86 @@
 services:
   portfolio:
-    build: .
-    ports:
-      - "8080:8080"
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - BUILD_DATE=${BUILD_DATE:-2025-07-19}
+        - VCS_REF=${VCS_REF:-latest}
+    image: itzdevoo/portfolio:latest
     container_name: itzdevoo-portfolio
     restart: unless-stopped
+    ports:
+      - "8080:8080"
     environment:
       - NODE_ENV=production
+      - TZ=UTC
+      - NGINX_WORKER_PROCESSES=auto
+      - NGINX_WORKER_CONNECTIONS=1024
+    volumes:
+      # Optional: Mount logs for monitoring
+      - ./logs:/var/log/nginx:rw
+      # Optional: Mount custom nginx config
+      # - ./nginx.conf:/etc/nginx/nginx.conf:ro
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 3
       start_period: 40s
     networks:
       - portfolio-network
+    security_opt:
+      - no-new-privileges:true
+    read_only: false  # nginx needs to write to temp directories
+    tmpfs:
+      - /tmp:noexec,nosuid,size=100m
+      - /var/cache/nginx:noexec,nosuid,size=50m
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.portfolio.rule=Host(`localhost`)"
+      - "traefik.http.routers.portfolio.entrypoints=web"
+      - "traefik.http.services.portfolio.loadbalancer.server.port=8080"
+      - "com.itzdevoo.service=portfolio"
+      - "com.itzdevoo.version=1.0.0"
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 128M
+        reservations:
+          cpus: '0.1'
+          memory: 32M
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        max_attempts: 3
+        window: 120s
+
+  # Optional: Add monitoring service
+  # monitoring:
+  #   image: prom/prometheus:latest
+  #   container_name: portfolio-monitoring
+  #   ports:
+  #     - "9090:9090"
+  #   volumes:
+  #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+  #   networks:
+  #     - portfolio-network
+  #   depends_on:
+  #     - portfolio
 
 networks:
   portfolio-network:
     driver: bridge
+    name: itzdevoo-portfolio-network
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.0.0/16
+    labels:
+      - "com.itzdevoo.network=portfolio"
+
+volumes:
+  portfolio-logs:
+    driver: local
+    name: itzdevoo-portfolio-logs
