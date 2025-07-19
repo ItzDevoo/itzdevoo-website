@@ -3,6 +3,7 @@ import { initAnimations } from './utils/animations.js';
 import { initResponsive } from './utils/responsive.js';
 import { initSmoothScroll } from './components/smooth-scroll.js';
 import { initNavigation } from './components/navigation.js';
+import { initPerformanceOptimizations, optimizeImages, optimizeFonts } from './utils/performance.js';
 
 // Site configuration
 const siteConfig = {
@@ -53,6 +54,11 @@ document.addEventListener('DOMContentLoaded', () => {
     if (siteConfig.features.animations) {
       initAnimations();
     }
+    
+    // Initialize performance optimizations
+    initPerformanceOptimizations();
+    optimizeImages();
+    optimizeFonts();
     
     // Initialize additional features
     initHeaderScroll();
