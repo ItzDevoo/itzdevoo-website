@@ -12,12 +12,16 @@
 
 html {
   scroll-behavior: smooth;
+  height: 100%;
 }
 
 body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  min-height: 100%;
+  overflow-x: hidden;
 }
 
 img,
@@ -27,6 +31,7 @@ canvas,
 svg {
   display: block;
   max-width: 100%;
+  height: auto;
 }
 
 input,
@@ -49,9 +54,49 @@ h6 {
 a {
   text-decoration: none;
   color: inherit;
+  transition: all var(--transition-fast);
+}
+
+a:focus {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
 }
 
 ul,
 ol {
   list-style: none;
+}
+
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+button:focus {
+  outline: 2px solid var(--secondary-color);
+  outline-offset: 2px;
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --primary-color: #000000;
+    --secondary-color: #00ff00;
+    --text-color: #000000;
+    --background-color: #ffffff;
+  }
 }

@@ -3,12 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ItzDevoo - Portfolio</title>
-    <meta name="description" content="Professional portfolio of ItzDevoo">
+    <meta name="description" content="Professional portfolio of ItzDevoo - Developer & Content Creator passionate about technology and creating digital experiences">
+    <meta name="keywords" content="developer, portfolio, web development, content creator, technology">
+    <meta name="author" content="ItzDevoo">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://itzdevoo.com/">
+    <meta property="og:title" content="ItzDevoo - Developer & Content Creator">
+    <meta property="og:description" content="Professional portfolio showcasing development projects and content creation">
+    
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://itzdevoo.com/">
+    <meta property="twitter:title" content="ItzDevoo - Developer & Content Creator">
+    <meta property="twitter:description" content="Professional portfolio showcasing development projects and content creation">
+    
+    <title>ItzDevoo - Developer & Content Creator</title>
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="styles/main.css" as="style">
     <link rel="stylesheet" href="styles/main.css">
+    
+    <!-- Favicon (placeholder) -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 </head>
 <body>
-    <!-- Content will be added in subsequent tasks -->
-    <script src="scripts/main.js"></script>
+    <!-- Skip to main content for accessibility -->
+    <a href="#main" class="sr-only">Skip to main content</a>
+    
+    <!-- Header Section -->
+    <header class="header" role="banner">
+        <div class="container">
+            <div class="header__content">
+                <div class="header__brand">
+                    <h1 class="header__title">ItzDevoo</h1>
+                    <p class="header__subtitle">Developer & Content Creator</p>
+                </div>
+                <nav class="header__nav" role="navigation" aria-label="Main navigation">
+                    <!-- Navigation will be added if needed in future tasks -->
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main" role="main">
+        <!-- Hero Section -->
+        <section class="hero" aria-labelledby="hero-title">
+            <div class="container">
+                <div class="hero__content">
+                    <div class="hero__text">
+                        <h2 id="hero-title" class="hero__title">Welcome to My Digital Space</h2>
+                        <p class="hero__subtitle">Passionate Developer & Content Creator</p>
+                        <p class="hero__description">
+                            I create digital experiences through code and share knowledge through content. 
+                            Explore my journey in technology and creativity.
+                        </p>
+                    </div>
+                    <div class="hero__image">
+                        <img src="https://via.placeholder.com/200x200/32cd32/000000?text=ItzDevoo" 
+                             alt="ItzDevoo profile picture" 
+                             class="hero__avatar"
+                             width="200" 
+                             height="200">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about" aria-labelledby="about-title">
+            <div class="container">
+                <h2 id="about-title" class="about__title">About Me</h2>
+                <div class="about__content">
+                    <article class="about__card">
+                        <h3 class="about__card-title">Developer</h3>
+                        <div class="about__card-content">
+                            <p>
+                                Passionate about creating clean, efficient code and building 
+                                digital solutions that make a difference. Always learning 
+                                new technologies and best practices.
+                            </p>
+                        </div>
+                    </article>
+                    
+                    <article class="about__card">
+                        <h3 class="about__card-title">Content Creator</h3>
+                        <div class="about__card-content">
+                            <p>
+                                Sharing knowledge and experiences through various platforms. 
+                                Helping others learn and grow in their tech journey through 
+                                tutorials and insights.
+                            </p>
+                        </div>
+                    </article>
+                    
+                    <article class="about__card">
+                        <h3 class="about__card-title">Tech Enthusiast</h3>
+                        <div class="about__card-content">
+                            <p>
+                                Always exploring the latest in technology, from web development 
+                                to emerging trends. Committed to staying current and sharing 
+                                discoveries with the community.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" role="contentinfo">
+        <div class="container">
+            <div class="footer__content">
+                <div class="footer__contact">
+                    <p>Get in touch:</p>
+                    <a href="mailto:contact@itzdevoo.com" class="footer__email" aria-label="Send email to ItzDevoo">
+                        contact@itzdevoo.com
+                    </a>
+                </div>
+                
+                <div class="footer__social" role="list">
+                    <a href="https://github.com/itzdevoo" 
+                       class="footer__social-link" 
+                       aria-label="Visit ItzDevoo's GitHub profile"
+                       target="_blank" 
+                       rel="noopener noreferrer">
+                        GitHub
+                    </a>
+                    <a href="https://youtube.com/@itzdevoo" 
+                       class="footer__social-link" 
+                       aria-label="Visit ItzDevoo's YouTube channel"
+                       target="_blank" 
+                       rel="noopener noreferrer">
+                        YouTube
+                    </a>
+                </div>
+                
+                <div class="footer__copyright">
+                    <p>&copy; 2025 ItzDevoo. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script type="module" src="scripts/main.js"></script>
 </body>
 </html>
