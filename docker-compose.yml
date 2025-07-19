@@ -4,9 +4,11 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
+        - GITHUB_REPO=https://github.com/ItzDevoo/itzdevoo-website.git
+        - BRANCH=live
         - BUILD_DATE=${BUILD_DATE:-2025-07-19}
         - VCS_REF=${VCS_REF:-latest}
-    image: itzdevoo/website:latest
+    image: itzdevoo/website:git-deployed
     container_name: itzdevoo-website
     restart: unless-stopped
     ports:
