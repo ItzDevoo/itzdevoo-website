@@ -1,0 +1,39 @@
+{
+  "name": "itzdevoo-website",
+  "version": "1.0.0",
+  "description": "Professional website of ItzDevoo - Developer & Content Creator",
+  "main": "index.html",
+  "scripts": {
+    "dev": "node scripts/dev.js",
+    "build": "node scripts/deploy.js",
+    "test": "node scripts/test.js",
+    "docker:build": "docker build -t itzdevoo-website .",
+    "docker:run": "docker run -d -p 8080:8080 --name itzdevoo-site itzdevoo-website",
+    "docker:stop": "docker stop itzdevoo-site && docker rm itzdevoo-site",
+    "docker:logs": "docker logs itzdevoo-site",
+    "docker:dev": "docker-compose up --build",
+    "docker:down": "docker-compose down",
+    "validate": "node scripts/test.js",
+    "start:local": "python -m http.server 8080 2>/dev/null || python3 -m http.server 8080 2>/dev/null || npx serve -l 8080 .",
+    "clean": "node scripts/clean.js"
+  },
+  "keywords": [
+    "portfolio",
+    "website",
+    "developer",
+    "content-creator",
+    "static-site"
+  ],
+  "author": "ItzDevoo",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itzdevoo/itzdevoo-website.git"
+  },
+  "bugs": {
+    "url": "https://github.com/itzdevoo/itzdevoo-website/issues"
+  },
+  "homepage": "https://itzdevoo.com"
+}

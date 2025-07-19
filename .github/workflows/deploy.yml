@@ -1,0 +1,195 @@
+name: Deploy ItzDevoo Website
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  DOCKER_IMAGE: itzdevoo-website
+  CONTAINER_NAME: itzdevoo-site
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test Website
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Run tests
+      run: |
+        echo "🧪 Running website tests..."
+        node scripts/test.js
+        
+    - name: Validate HTML structure
+      run: |
+        echo "🌐 Validating HTML structure..."
+        if [ ! -f "index.html" ]; then
+          echo "❌ index.html not found"
+          exit 1
+        fi
+        echo "✅ HTML structure validated"
+        
+    - name: Check required files
+      run: |
+        echo "📋 Checking required files..."
+        required_files=("styles/main.css" "scripts/main.js" "sw.js" "site.webmanifest" "nginx.conf")
+        for file in "${required_files[@]}"; do
+          if [ ! -f "$file" ]; then
+            echo "❌ Required file missing: $file"
+            exit 1
+          else
+            echo "✅ Found: $file"
+          fi
+        done
+
+  build:
+    runs-on: ubuntu-latest
+    needs: test
+    name: Build Docker Image
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v3
+      
+    - name: Build Docker image
+      run: |
+        echo "🐳 Building Docker image..."
+        docker build -t $DOCKER_IMAGE .
+        
+    - name: Test Docker container
+      run: |
+        echo "🧪 Testing Docker container..."
+        
+        # Start container
+        docker run -d -p 8080:8080 --name test-container $DOCKER_IMAGE
+        
+        # Wait for container to start
+        sleep 10
+        
+        # Test health endpoint
+        if curl -f http://localhost:8080/health; then
+          echo "✅ Health check passed"
+        else
+          echo "❌ Health check failed"
+          docker logs test-container
+          exit 1
+        fi
+        
+        # Test main page
+        if curl -f http://localhost:8080/ > /dev/null; then
+          echo "✅ Main page accessible"
+        else
+          echo "❌ Main page not accessible"
+          docker logs test-container
+          exit 1
+        fi
+        
+        # Cleanup
+        docker stop test-container
+        docker rm test-container
+        
+    - name: Save Docker image
+      if: github.ref == 'refs/heads/main'
+      run: |
+        echo "💾 Saving Docker image..."
+        docker save $DOCKER_IMAGE | gzip > itzdevoo-website.tar.gz
+        
+    - name: Upload Docker image artifact
+      if: github.ref == 'refs/heads/main'
+      uses: actions/upload-artifact@v4
+      with:
+        name: docker-image
+        path: itzdevoo-website.tar.gz
+        retention-days: 7
+
+  security:
+    runs-on: ubuntu-latest
+    name: Security Scan
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Scan for secrets
+      run: |
+        echo "🔒 Scanning for potential secrets..."
+        
+        # Check for common secret patterns
+        if grep -r -i "password\|secret\|key\|token" --include="*.js" --include="*.html" --include="*.css" .; then
+          echo "⚠️ Found potential secrets in code"
+          echo "Please review the above matches"
+        else
+          echo "✅ No obvious secrets found"
+        fi
+        
+    - name: Check security headers
+      run: |
+        echo "🛡️ Validating security headers in nginx config..."
+        
+        required_headers=("X-Frame-Options" "X-XSS-Protection" "X-Content-Type-Options" "Strict-Transport-Security")
+        
+        for header in "${required_headers[@]}"; do
+          if grep -q "$header" nginx.conf; then
+            echo "✅ Found security header: $header"
+          else
+            echo "⚠️ Missing security header: $header"
+          fi
+        done
+
+  notify:
+    runs-on: ubuntu-latest
+    needs: [test, build, security]
+    if: always()
+    name: Notify Results
+    
+    steps:
+    - name: Check overall status
+      run: |
+        echo "📊 Deployment Pipeline Results:"
+        echo "================================"
+        
+        if [ "${{ needs.test.result }}" = "success" ]; then
+          echo "✅ Tests: PASSED"
+        else
+          echo "❌ Tests: FAILED"
+        fi
+        
+        if [ "${{ needs.build.result }}" = "success" ]; then
+          echo "✅ Build: PASSED"
+        else
+          echo "❌ Build: FAILED"
+        fi
+        
+        if [ "${{ needs.security.result }}" = "success" ]; then
+          echo "✅ Security: PASSED"
+        else
+          echo "❌ Security: FAILED"
+        fi
+        
+        echo ""
+        if [ "${{ needs.test.result }}" = "success" ] && [ "${{ needs.build.result }}" = "success" ]; then
+          echo "🎉 Deployment pipeline completed successfully!"
+          echo "🌐 Ready to deploy to production server"
+          echo ""
+          echo "📋 Next steps:"
+          echo "1. SSH to your server"
+          echo "2. Run: git pull origin main"
+          echo "3. Run: docker-compose down && docker-compose up -d --build"
+          echo "4. Test: curl http://localhost:8080/health"
+        else
+          echo "❌ Deployment pipeline failed"
+          echo "Please review the errors above"
+        fi

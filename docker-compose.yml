@@ -1,49 +1,24 @@
+version: '3.8'
+
 services:
-  website:
-    build: 
+  itzdevoo-website:
+    build:
       context: .
       dockerfile: Dockerfile
-      args:
-        - GITHUB_REPO=https://github.com/ItzDevoo/itzdevoo-website.git
-        - BRANCH=live
-        - BUILD_DATE=${BUILD_DATE:-2025-07-19}
-        - VCS_REF=${VCS_REF:-latest}
-    image: itzdevoo/website:git-deployed
-    container_name: itzdevoo-website
-    restart: unless-stopped
     ports:
       - "8080:8080"
-    environment:
-      - NODE_ENV=production
-      - TZ=UTC
-      - NGINX_WORKER_PROCESSES=auto
-      - NGINX_WORKER_CONNECTIONS=1024
-    volumes:
-      # Optional: Mount logs for monitoring
-      - ./logs:/var/log/nginx:rw
-      # Optional: Mount custom nginx config
-      # - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    container_name: itzdevoo-site
+    restart: unless-stopped
+    
+    # Health check
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:8080/health"]
       interval: 30s
       timeout: 10s
       retries: 3
-      start_period: 40s
-    networks:
-      - website-network
-    security_opt:
-      - no-new-privileges:true
-    read_only: false  # nginx needs to write to temp directories
-    tmpfs:
-      - /tmp:noexec,nosuid,size=100m
-      - /var/cache/nginx:noexec,nosuid,size=50m
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.website.rule=Host(`localhost`)"
-      - "traefik.http.routers.website.entrypoints=web"
-      - "traefik.http.services.website.loadbalancer.server.port=8080"
-      - "com.itzdevoo.service=website"
-      - "com.itzdevoo.version=1.0.0"
+      start_period: 10s
+    
+    # Resource limits
     deploy:
       resources:
         limits:
@@ -52,37 +27,20 @@ services:
         reservations:
           cpus: '0.1'
           memory: 32M
-      restart_policy:
-        condition: on-failure
-        delay: 5s
-        max_attempts: 3
-        window: 120s
-
-  # Optional: Add monitoring service
-  # monitoring:
-  #   image: prom/prometheus:latest
-  #   container_name: website-monitoring
-  #   ports:
-  #     - "9090:9090"
-  #   volumes:
-  #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-  #   networks:
-  #     - website-network
-  #   depends_on:
-  #     - website
-
-networks:
-  website-network:
-    driver: bridge
-    name: itzdevoo-website-network
-    ipam:
-      driver: default
-      config:
-        - subnet: 172.20.0.0/16
+    
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Environment variables
+    environment:
+      - NGINX_ENTRYPOINT_QUIET_LOGS=1
+    
+    # Labels for organization
     labels:
-      - "com.itzdevoo.network=website"
-
-volumes:
-  website-logs:
-    driver: local
-    name: itzdevoo-website-logs
+      - "traefik.enable=false"
+      - "com.itzdevoo.service=website"
+      - "com.itzdevoo.version=1.0.0"

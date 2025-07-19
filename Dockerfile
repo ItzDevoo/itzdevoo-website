@@ -1,79 +1,43 @@
-# Serve pre-built files from GitHub live branch
-FROM nginx:alpine
-
-# Install git and curl for pulling files and health checks
-RUN apk update && \
-    apk upgrade && \
-    apk add --no-cache \
-    git \
-    curl \
-    tzdata \
-    && rm -rf /var/cache/apk/*
-
-# Set timezone
-ENV TZ=UTC
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# Set build arguments
-ARG GITHUB_REPO=https://github.com/ItzDevoo/itzdevoo-website.git
-ARG BRANCH=live
-ARG BUILD_DATE
-ARG VCS_REF
-
-# Create app directory
-WORKDIR /app
-
-# Pull the pre-built files from GitHub live branch
-RUN git clone --depth 1 --branch ${BRANCH} ${GITHUB_REPO} . && \
-    rm -rf .git
+# Multi-stage build for ItzDevoo website
+FROM nginx:alpine as production
 
 # Copy nginx configuration
 COPY nginx.conf /etc/nginx/nginx.conf
 
-# Copy the pre-built website files to nginx directory
-RUN cp -r * /usr/share/nginx/html/ && \
-    rm -rf /usr/share/nginx/html/project-scripts && \
-    rm -rf /usr/share/nginx/html/.kiro && \
-    rm -rf /usr/share/nginx/html/.github && \
-    rm -rf /usr/share/nginx/html/Dockerfile* && \
-    rm -rf /usr/share/nginx/html/docker-compose* && \
-    rm -rf /usr/share/nginx/html/*.md && \
-    rm -rf /usr/share/nginx/html/README*
+# Copy website files to nginx html directory
+COPY . /usr/share/nginx/html/
 
-# Create necessary directories with proper permissions
-RUN mkdir -p /var/cache/nginx/client_temp && \
-    mkdir -p /var/cache/nginx/proxy_temp && \
-    mkdir -p /var/cache/nginx/fastcgi_temp && \
-    mkdir -p /var/cache/nginx/uwsgi_temp && \
-    mkdir -p /var/cache/nginx/scgi_temp && \
-    mkdir -p /var/log/nginx && \
-    mkdir -p /tmp && \
-    mkdir -p /run/nginx && \
-    chmod -R 755 /var/cache/nginx && \
-    chmod -R 755 /tmp && \
-    chmod -R 755 /run/nginx && \
-    chmod -R 644 /usr/share/nginx/html && \
-    find /usr/share/nginx/html -type d -exec chmod 755 {} \;
+# Remove unnecessary files from html directory
+RUN rm -f /usr/share/nginx/html/Dockerfile \
+    /usr/share/nginx/html/nginx.conf \
+    /usr/share/nginx/html/.git* \
+    /usr/share/nginx/html/*.md
 
-# Security: Clean up
-RUN rm -rf /var/cache/apk/* && \
-    rm -rf /tmp/* && \
-    rm -rf /app
+# Create nginx cache directories
+RUN mkdir -p /var/cache/nginx/client_temp \
+    /var/cache/nginx/proxy_temp \
+    /var/cache/nginx/fastcgi_temp \
+    /var/cache/nginx/uwsgi_temp \
+    /var/cache/nginx/scgi_temp
 
-# Expose port
+# Set proper permissions
+RUN chown -R nginx:nginx /var/cache/nginx \
+    && chown -R nginx:nginx /usr/share/nginx/html \
+    && chown -R nginx:nginx /var/log/nginx
+
+# Create non-root user for running nginx
+RUN addgroup -g 101 -S nginx-user \
+    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx-user -g nginx-user nginx-user
+
+# Switch to non-root user
+USER nginx-user
+
+# Expose port 8080 (matching your nginx config)
 EXPOSE 8080
 
-# Add labels
-LABEL maintainer="ItzDevoo <contact@itzdevoo.com>" \
-      version="2.0.0" \
-      description="ItzDevoo Professional Website - Pre-built Files" \
-      deployment.source="github-prebuilt" \
-      deployment.branch="${BRANCH}"
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/health || exit 1
+# Add healthcheck
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+    CMD wget --no-verbose --tries=1 --spider http://localhost:8080/health || exit 1
 
 # Start nginx
-STOPSIGNAL SIGQUIT
 CMD ["nginx", "-g", "daemon off;"]
