@@ -4,6 +4,7 @@ import { initResponsive } from './utils/responsive.js';
 import { initSmoothScroll } from './components/smooth-scroll.js';
 import { initNavigation } from './components/navigation.js';
 import { initPerformanceOptimizations, optimizeImages, optimizeFonts } from './utils/performance.js';
+import { initSecurity, performSecurityHealthCheck } from './utils/security.js';
 
 // Site configuration
 const siteConfig = {
@@ -55,6 +56,9 @@ document.addEventListener('DOMContentLoaded', () => {
       initAnimations();
     }
     
+    // Initialize security measures
+    initSecurity();
+    
     // Initialize performance optimizations
     initPerformanceOptimizations();
     optimizeImages();
@@ -64,6 +68,9 @@ document.addEventListener('DOMContentLoaded', () => {
     initHeaderScroll();
     initContactForm();
     initPerformanceMonitoring();
+    
+    // Perform security health check
+    performSecurityHealthCheck();
     
     // Mark load complete
     performanceMetrics.loadTime = performance.now() - performanceMetrics.startTime;
