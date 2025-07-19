@@ -2,7 +2,7 @@
 .about {
   position: relative;
   padding: var(--spacing-20) 0;
-  background: linear-gradient(180deg, var(--background-color) 0%, var(--accent-color) 100%);
+  background: transparent;
 }
 
 .about::before {
@@ -135,7 +135,7 @@
 
 .about__skill-tag:hover {
   background-color: var(--secondary-color);
-  color: var(--primary-color);
+  color: #000000;
   border-color: var(--secondary-color);
   transform: translateY(-1px);
 }

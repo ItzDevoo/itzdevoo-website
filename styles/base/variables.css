@@ -1,11 +1,12 @@
 /* CSS Custom Properties */
 :root {
-  /* Colors - Dark Theme */
+  /* Colors - Teal & Black Gradient with Dark Overlay */
   --primary-color: #ffffff;
   --secondary-color: #00ff88;
   --text-color: #e2e8f0;
   --text-light: #94a3b8;
-  --background-color: #0f172a;
+  --background-color: linear-gradient(135deg, #0a0f14 0%, #0d1f1a 25%, #0e1f1c 50%, #0f2420 75%, #000000 100%);
+  --background-solid: #0f172a;
   --accent-color: #1e293b;
   --border-color: #334155;
   --success-color: #10b981;

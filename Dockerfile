@@ -21,17 +21,13 @@ RUN mkdir -p /var/cache/nginx/client_temp \
     /var/cache/nginx/uwsgi_temp \
     /var/cache/nginx/scgi_temp
 
-# Set proper permissions
+# Set proper permissions (nginx user already exists in the base image)
 RUN chown -R nginx:nginx /var/cache/nginx \
     && chown -R nginx:nginx /usr/share/nginx/html \
     && chown -R nginx:nginx /var/log/nginx
 
-# Create non-root user for running nginx
-RUN addgroup -g 101 -S nginx-user \
-    && adduser -S -D -H -u 101 -h /var/cache/nginx -s /sbin/nologin -G nginx-user -g nginx-user nginx-user
-
-# Switch to non-root user
-USER nginx-user
+# Switch to nginx user (already exists)
+USER nginx
 
 # Expose port 8080 (matching your nginx config)
 EXPOSE 8080

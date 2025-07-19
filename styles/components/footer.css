@@ -2,10 +2,12 @@
 .footer {
   position: relative;
   padding: var(--spacing-16) 0 var(--spacing-8) 0;
-  background: linear-gradient(135deg, var(--primary-color) 0%, #1a1a1a 100%);
-  color: var(--background-color);
+  background: linear-gradient(135deg, #0f2420 0%, #0d1f1a 25%, #0a0f14 50%, #000000 100%);
+  color: var(--text-color);
   text-align: center;
   overflow: hidden;
+  margin-top: auto;
+  min-height: 40vh;
 }
 
 .footer::before {
@@ -73,7 +75,7 @@
 
 .footer__email:hover {
   background-color: var(--secondary-color);
-  color: var(--primary-color);
+  color: #000000;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(50, 205, 50, 0.3);
 }
@@ -85,7 +87,7 @@
 
 .footer__social {
   display: flex;
-  gap: var(--spacing-4);
+  gap: var(--spacing-6);
   flex-wrap: wrap;
   justify-content: center;
   align-items: center;
@@ -106,24 +108,24 @@
 }
 
 .footer__social-link {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 48px;
-  height: 48px;
-  color: var(--background-color);
+  gap: var(--spacing-2);
+  padding: var(--spacing-3) var(--spacing-4);
+  color: var(--text-color);
   background-color: rgba(255, 255, 255, 0.1);
   border: 2px solid transparent;
   border-radius: var(--radius-lg);
   text-decoration: none;
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-sm);
   font-weight: var(--font-weight-semibold);
   transition: all var(--transition-normal);
   backdrop-filter: blur(10px);
 }
 
 .footer__social-link:hover {
-  color: var(--primary-color);
+  color: #000000;
   background-color: var(--secondary-color);
   border-color: var(--secondary-color);
   transform: translateY(-3px) scale(1.05);
@@ -135,22 +137,32 @@
   box-shadow: 0 0 0 3px rgba(50, 205, 50, 0.4);
 }
 
-/* Social link specific styles */
-.footer__social-link--github::before {
-  content: 'GH';
+/* Social icons */
+.footer__social-icon {
+  display: inline-block;
+  margin-right: 0.5rem;
+  width: 20px;
+  height: 20px;
+  color: var(--secondary-color);
+  transition: all var(--transition-fast);
+  vertical-align: middle;
 }
 
-.footer__social-link--youtube::before {
-  content: 'YT';
+.footer__social-link:hover .footer__social-icon {
+  color: #000000;
+  transform: scale(1.1);
 }
 
-.footer__social-link--linkedin::before {
-  content: 'LI';
+/* Platform-specific icon styling */
+.footer__social-link--github .footer__social-icon {
+  filter: drop-shadow(0 0 2px rgba(0, 255, 136, 0.4));
 }
 
-.footer__social-link--twitter::before {
-  content: 'TW';
+.footer__social-link--youtube .footer__social-icon {
+  filter: drop-shadow(0 0 2px rgba(0, 255, 136, 0.4));
 }
+
+/* Social link specific styles - removed old ::before content */
 
 .footer__divider {
   width: 100%;

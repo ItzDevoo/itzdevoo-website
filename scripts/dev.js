@@ -8,9 +8,10 @@ console.log('🚀 Starting ItzDevoo website development server...\n');
 
 // Development configuration
 const devConfig = {
-  port: 8080,
+  port: 3000,
   host: '127.0.0.1',
-  openBrowser: true
+  openBrowser: true,
+  fallbackPorts: [3001, 3002, 8081, 8082]
 };
 
 // Run tests first
