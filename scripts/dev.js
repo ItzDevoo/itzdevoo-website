@@ -101,20 +101,23 @@ function openBrowser() {
   const url = `http://${devConfig.host}:${devConfig.port}`;
   
   const platforms = {
-    darwin: 'open',
-    win32: 'start',
-    linux: 'xdg-open'
+    darwin: ['open'],
+    win32: ['cmd', '/c', 'start'],
+    linux: ['xdg-open']
   };
   
-  const command = platforms[process.platform];
+  const commandArgs = platforms[process.platform];
   
-  if (command) {
+  if (commandArgs) {
     try {
-      spawn(command, [url], { stdio: 'ignore', detached: true });
+      const [command, ...args] = commandArgs;
+      spawn(command, [...args, url], { stdio: 'ignore', detached: true });
       console.log(`🌐 Opening browser: ${url}`);
     } catch (error) {
       console.log(`⚠️ Could not open browser automatically. Visit: ${url}`);
     }
+  } else {
+    console.log(`🌐 Please visit: ${url}`);
   }
 }
 
@@ -143,22 +146,53 @@ function setupCleanup() {
   });
 }
 
-// Check if port is available
-function checkPort() {
+// Check if port is available and find alternative
+function findAvailablePort() {
   const net = require('net');
   
   return new Promise((resolve) => {
-    const server = net.createServer();
+    const checkPortAvailable = (port) => {
+      return new Promise((portResolve) => {
+        const server = net.createServer();
+        
+        server.listen(port, devConfig.host, () => {
+          server.close();
+          portResolve(true);
+        });
+        
+        server.on('error', () => {
+          portResolve(false);
+        });
+      });
+    };
     
-    server.listen(devConfig.port, devConfig.host, () => {
-      server.close();
-      resolve(true);
-    });
-    
-    server.on('error', () => {
+    // Check primary port first
+    checkPortAvailable(devConfig.port).then(available => {
+      if (available) {
+        resolve(devConfig.port);
+        return;
+      }
+      
       console.log(`⚠️ Port ${devConfig.port} is already in use`);
-      console.log('🔄 Trying to use the existing server...\n');
-      resolve(false);
+      console.log('🔍 Looking for alternative port...\n');
+      
+      // Try fallback ports
+      const tryFallbackPorts = async () => {
+        for (const port of devConfig.fallbackPorts) {
+          const available = await checkPortAvailable(port);
+          if (available) {
+            console.log(`✅ Found available port: ${port}`);
+            devConfig.port = port; // Update the config
+            resolve(port);
+            return;
+          }
+        }
+        
+        console.log('❌ No available ports found in range');
+        resolve(null);
+      };
+      
+      tryFallbackPorts();
     });
   });
 }
@@ -177,17 +211,16 @@ async function startDevelopment() {
     // Run tests
     await runTests();
     
-    // Check port availability
-    const portAvailable = await checkPort();
+    // Find available port
+    const availablePort = await findAvailablePort();
     
-    if (portAvailable) {
+    if (availablePort) {
       // Start server
       startDevServer();
     } else {
-      console.log(`🌐 Development server might already be running at http://${devConfig.host}:${devConfig.port}`);
-      if (devConfig.openBrowser) {
-        openBrowser();
-      }
+      console.log('❌ Could not find an available port to start the development server');
+      console.log('💡 Try closing other applications using ports 8080-8083 or 3000-3001');
+      process.exit(1);
     }
     
     // Show tips
