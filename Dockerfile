@@ -31,7 +31,7 @@ RUN git clone --depth 1 --branch ${BRANCH} ${GITHUB_REPO} . && \
 COPY nginx.conf /etc/nginx/nginx.conf
 
 # Copy website files to nginx directory
-RUN cp -r index.html styles scripts sw.js site.webmanifest robots.txt /usr/share/nginx/html/ && \
+RUN cp -r index.html styles scripts images sw.js site.webmanifest robots.txt /usr/share/nginx/html/ && \
     rm -rf /usr/share/nginx/html/project-scripts && \
     rm -rf /usr/share/nginx/html/.kiro && \
     rm -rf /usr/share/nginx/html/.github && \
