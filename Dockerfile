@@ -4,10 +4,6 @@ FROM node:18-alpine AS builder
 # Set working directory
 WORKDIR /app
 
-# Copy package files (will be created in future tasks)
-# COPY package*.json ./
-# RUN npm ci --only=production
-
 # Copy source files
 COPY . .
 
@@ -20,25 +16,24 @@ COPY nginx.conf /etc/nginx/nginx.conf
 # Copy website files
 COPY --from=builder /app /usr/share/nginx/html
 
-# Create non-root user for security
-RUN addgroup -g 1001 -S nginx-user && \
-    adduser -S -D -H -u 1001 -h /var/cache/nginx -s /sbin/nologin -G nginx-user -g nginx-user nginx-user
-
-# Set proper permissions
-RUN chown -R nginx-user:nginx-user /usr/share/nginx/html && \
-    chown -R nginx-user:nginx-user /var/cache/nginx && \
-    chown -R nginx-user:nginx-user /var/log/nginx && \
-    chown -R nginx-user:nginx-user /etc/nginx/conf.d
-
-# Switch to non-root user
-USER nginx-user
+# Create directories with proper permissions
+RUN mkdir -p /var/cache/nginx/client_temp && \
+    mkdir -p /var/cache/nginx/proxy_temp && \
+    mkdir -p /var/cache/nginx/fastcgi_temp && \
+    mkdir -p /var/cache/nginx/uwsgi_temp && \
+    mkdir -p /var/cache/nginx/scgi_temp && \
+    mkdir -p /tmp && \
+    chmod -R 755 /var/cache/nginx && \
+    chmod -R 755 /tmp && \
+    chmod -R 644 /usr/share/nginx/html && \
+    find /usr/share/nginx/html -type d -exec chmod 755 {} \;
 
 # Expose port
 EXPOSE 8080
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost:8080/ || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/ || exit 1
 
 # Start nginx
 CMD ["nginx", "-g", "daemon off;"]
