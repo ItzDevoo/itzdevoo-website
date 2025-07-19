@@ -50,34 +50,44 @@
     <!-- Main Content -->
     <main id="main" role="main">
         <!-- Hero Section -->
-        <section class="hero" aria-labelledby="hero-title">
+        <section id="hero" class="hero" aria-labelledby="hero-title" data-animation="fade-in">
             <div class="container">
                 <div class="hero__content">
-                    <div class="hero__text">
-                        <h2 id="hero-title" class="hero__title">Welcome to My Digital Space</h2>
+                    <div class="hero__text" data-animation="slide-right">
+                        <h2 id="hero-title" class="hero__title">Welcome to My <span class="highlight">Digital Space</span></h2>
                         <p class="hero__subtitle">Passionate Developer & Content Creator</p>
                         <p class="hero__description">
                             I create digital experiences through code and share knowledge through content. 
                             Explore my journey in technology and creativity.
                         </p>
+                        <div class="hero__cta">
+                            <a href="#about" class="hero__cta-button hero__cta-button--primary">
+                                Learn More About Me
+                            </a>
+                            <a href="mailto:contact@itzdevoo.com" class="hero__cta-button hero__cta-button--secondary">
+                                Get In Touch
+                            </a>
+                        </div>
                     </div>
-                    <div class="hero__image">
+                    <div class="hero__image" data-animation="scale-in">
                         <img src="https://via.placeholder.com/200x200/32cd32/000000?text=ItzDevoo" 
                              alt="ItzDevoo profile picture" 
                              class="hero__avatar"
                              width="200" 
-                             height="200">
+                             height="200"
+                             loading="lazy">
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- About Section -->
-        <section class="about" aria-labelledby="about-title">
+        <section id="about" class="about" aria-labelledby="about-title" data-animation="fade-in">
             <div class="container">
-                <h2 id="about-title" class="about__title">About Me</h2>
+                <h2 id="about-title" class="about__title" data-animation="slide-up">About Me</h2>
                 <div class="about__content">
-                    <article class="about__card">
+                    <article class="about__card" data-animation="slide-up">
+                        <div class="about__card-icon">D</div>
                         <h3 class="about__card-title">Developer</h3>
                         <div class="about__card-content">
                             <p>
@@ -85,10 +95,17 @@
                                 digital solutions that make a difference. Always learning 
                                 new technologies and best practices.
                             </p>
+                            <div class="about__skills">
+                                <span class="about__skill-tag">JavaScript</span>
+                                <span class="about__skill-tag">Python</span>
+                                <span class="about__skill-tag">React</span>
+                                <span class="about__skill-tag">Node.js</span>
+                            </div>
                         </div>
                     </article>
                     
-                    <article class="about__card">
+                    <article class="about__card" data-animation="slide-up">
+                        <div class="about__card-icon">C</div>
                         <h3 class="about__card-title">Content Creator</h3>
                         <div class="about__card-content">
                             <p>
@@ -96,10 +113,17 @@
                                 Helping others learn and grow in their tech journey through 
                                 tutorials and insights.
                             </p>
+                            <div class="about__skills">
+                                <span class="about__skill-tag">YouTube</span>
+                                <span class="about__skill-tag">Tutorials</span>
+                                <span class="about__skill-tag">Tech Reviews</span>
+                                <span class="about__skill-tag">Guides</span>
+                            </div>
                         </div>
                     </article>
                     
-                    <article class="about__card">
+                    <article class="about__card" data-animation="slide-up">
+                        <div class="about__card-icon">T</div>
                         <h3 class="about__card-title">Tech Enthusiast</h3>
                         <div class="about__card-content">
                             <p>
@@ -107,8 +131,34 @@
                                 to emerging trends. Committed to staying current and sharing 
                                 discoveries with the community.
                             </p>
+                            <div class="about__skills">
+                                <span class="about__skill-tag">AI/ML</span>
+                                <span class="about__skill-tag">Cloud</span>
+                                <span class="about__skill-tag">DevOps</span>
+                                <span class="about__skill-tag">Innovation</span>
+                            </div>
                         </div>
                     </article>
+                </div>
+                
+                <!-- Stats Section -->
+                <div class="about__stats" data-animation="fade-in">
+                    <div class="about__stat">
+                        <span class="about__stat-number">3+</span>
+                        <span class="about__stat-label">Years Experience</span>
+                    </div>
+                    <div class="about__stat">
+                        <span class="about__stat-number">50+</span>
+                        <span class="about__stat-label">Projects Completed</span>
+                    </div>
+                    <div class="about__stat">
+                        <span class="about__stat-number">1K+</span>
+                        <span class="about__stat-label">Community Members</span>
+                    </div>
+                    <div class="about__stat">
+                        <span class="about__stat-number">24/7</span>
+                        <span class="about__stat-label">Learning Mode</span>
+                    </div>
                 </div>
             </div>
         </section>
