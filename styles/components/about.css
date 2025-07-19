@@ -1,0 +1,45 @@
+/* About Section Styles */
+.about {
+  padding: var(--spacing-xxl) 0;
+}
+
+.about__title {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+  color: var(--primary-color);
+}
+
+.about__content {
+  display: grid;
+  gap: var(--spacing-lg);
+}
+
+.about__card {
+  background: var(--background-color);
+  padding: var(--spacing-lg);
+  border-radius: 8px;
+  box-shadow: var(--shadow-light);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+}
+
+.about__card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-medium);
+}
+
+.about__card-title {
+  color: var(--primary-color);
+  margin-bottom: var(--spacing-sm);
+}
+
+.about__card-content {
+  color: var(--text-color);
+  line-height: 1.6;
+}
+
+/* Desktop layout */
+@media (min-width: 768px) {
+  .about__content {
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+}

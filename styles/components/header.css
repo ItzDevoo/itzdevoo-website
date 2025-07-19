@@ -1,0 +1,29 @@
+/* Header Component Styles */
+.header {
+  padding: var(--spacing-md) 0;
+  background-color: var(--background-color);
+  border-bottom: 1px solid #e9ecef;
+}
+
+.header__content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header__title {
+  font-size: var(--font-size-xl);
+  font-weight: 700;
+  color: var(--primary-color);
+}
+
+.header__subtitle {
+  font-size: var(--font-size-base);
+  color: var(--secondary-color);
+  margin-top: var(--spacing-xs);
+}
+
+/* Placeholder for future navigation */
+.header__nav {
+  display: none; /* Will be implemented later if needed */
+}
