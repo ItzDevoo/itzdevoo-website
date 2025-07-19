@@ -5,6 +5,7 @@ import { initSmoothScroll } from './components/smooth-scroll.js';
 import { initNavigation } from './components/navigation.js';
 import { initPerformanceOptimizations, optimizeImages, optimizeFonts } from './utils/performance.js';
 import { initSecurity, performSecurityHealthCheck } from './utils/security.js';
+import { initTesting } from './utils/testing.js';
 
 // Site configuration
 const siteConfig = {
@@ -41,7 +42,7 @@ const performanceMetrics = {
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', () => {
-  console.log('🚀 ItzDevoo Portfolio - Initializing...');
+  console.log('🚀 ItzDevoo website - Initializing...');
   
   try {
     // Initialize core features
@@ -72,12 +73,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Perform security health check
     performSecurityHealthCheck();
     
+    // Initialize testing utilities (development mode)
+    if (window.location.hostname === 'localhost' || window.location.search.includes('debug=true')) {
+      initTesting();
+    }
+    
     // Mark load complete
     performanceMetrics.loadTime = performance.now() - performanceMetrics.startTime;
-    console.log(`✅ Portfolio loaded in ${performanceMetrics.loadTime.toFixed(2)}ms`);
+    console.log(`✅ website loaded in ${performanceMetrics.loadTime.toFixed(2)}ms`);
     
   } catch (error) {
-    console.error('❌ Error initializing portfolio:', error);
+    console.error('❌ Error initializing website:', error);
   }
 });
 

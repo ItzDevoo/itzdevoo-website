@@ -1,5 +1,5 @@
-// Service Worker for ItzDevoo Portfolio
-const CACHE_NAME = 'itzdevoo-portfolio-v1.0.0';
+// Service Worker for ItzDevoo website
+const CACHE_NAME = 'itzdevoo-website-v1.0.0';
 const STATIC_CACHE = 'static-v1.0.0';
 const DYNAMIC_CACHE = 'dynamic-v1.0.0';
 
@@ -165,7 +165,7 @@ self.addEventListener('push', event => {
   };
   
   event.waitUntil(
-    self.registration.showNotification('ItzDevoo Portfolio', options)
+    self.registration.showNotification('ItzDevoo website', options)
   );
 });
 

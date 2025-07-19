@@ -89,9 +89,9 @@ EXPOSE 8080
 # Add labels for better container management
 LABEL maintainer="ItzDevoo <contact@itzdevoo.com>" \
       version="1.0.0" \
-      description="ItzDevoo Professional Portfolio Website" \
-      org.opencontainers.image.title="ItzDevoo Portfolio" \
-      org.opencontainers.image.description="Professional portfolio website with Docker deployment" \
+      description="ItzDevoo Professional website Website" \
+      org.opencontainers.image.title="ItzDevoo website" \
+      org.opencontainers.image.description="Professional website website with Docker deployment" \
       org.opencontainers.image.version="1.0.0" \
       org.opencontainers.image.created="2025-07-19" \
       org.opencontainers.image.source="https://github.com/ItzDevoo/itzdevoo-website" \

@@ -2,13 +2,13 @@
 
 ## Introduction
 
-This project involves creating a professional personal portfolio website that showcases personal information in a polished, smooth interface. The site will be containerized using Docker and deployed locally while being accessible publicly through Cloudflare tunnels and the itzdevoo.com domain. The project will include a GitHub repository with multiple branches for different environments (development, live, etc.).
+This project involves creating a professional personal website website that showcases personal information in a polished, smooth interface. The site will be containerized using Docker and deployed locally while being accessible publicly through Cloudflare tunnels and the itzdevoo.com domain. The project will include a GitHub repository with multiple branches for different environments (development, live, etc.).
 
 ## Requirements
 
 ### Requirement 1
 
-**User Story:** As a visitor to the website, I want to see a professional and polished portfolio interface, so that I can quickly understand who the site owner is and their professional background.
+**User Story:** As a visitor to the website, I want to see a professional and polished website interface, so that I can quickly understand who the site owner is and their professional background.
 
 #### Acceptance Criteria
 

@@ -1,13 +1,13 @@
 services:
-  portfolio:
+  website:
     build: 
       context: .
       dockerfile: Dockerfile
       args:
         - BUILD_DATE=${BUILD_DATE:-2025-07-19}
         - VCS_REF=${VCS_REF:-latest}
-    image: itzdevoo/portfolio:latest
-    container_name: itzdevoo-portfolio
+    image: itzdevoo/website:latest
+    container_name: itzdevoo-website
     restart: unless-stopped
     ports:
       - "8080:8080"
@@ -28,7 +28,7 @@ services:
       retries: 3
       start_period: 40s
     networks:
-      - portfolio-network
+      - website-network
     security_opt:
       - no-new-privileges:true
     read_only: false  # nginx needs to write to temp directories
@@ -37,10 +37,10 @@ services:
       - /var/cache/nginx:noexec,nosuid,size=50m
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.portfolio.rule=Host(`localhost`)"
-      - "traefik.http.routers.portfolio.entrypoints=web"
-      - "traefik.http.services.portfolio.loadbalancer.server.port=8080"
-      - "com.itzdevoo.service=portfolio"
+      - "traefik.http.routers.website.rule=Host(`localhost`)"
+      - "traefik.http.routers.website.entrypoints=web"
+      - "traefik.http.services.website.loadbalancer.server.port=8080"
+      - "com.itzdevoo.service=website"
       - "com.itzdevoo.version=1.0.0"
     deploy:
       resources:
@@ -59,28 +59,28 @@ services:
   # Optional: Add monitoring service
   # monitoring:
   #   image: prom/prometheus:latest
-  #   container_name: portfolio-monitoring
+  #   container_name: website-monitoring
   #   ports:
   #     - "9090:9090"
   #   volumes:
   #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
   #   networks:
-  #     - portfolio-network
+  #     - website-network
   #   depends_on:
-  #     - portfolio
+  #     - website
 
 networks:
-  portfolio-network:
+  website-network:
     driver: bridge
-    name: itzdevoo-portfolio-network
+    name: itzdevoo-website-network
     ipam:
       driver: default
       config:
         - subnet: 172.20.0.0/16
     labels:
-      - "com.itzdevoo.network=portfolio"
+      - "com.itzdevoo.network=website"
 
 volumes:
-  portfolio-logs:
+  website-logs:
     driver: local
-    name: itzdevoo-portfolio-logs
+    name: itzdevoo-website-logs

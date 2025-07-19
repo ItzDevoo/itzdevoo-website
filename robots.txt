@@ -7,7 +7,7 @@ Sitemap: https://itzdevoo.com/sitemap.xml
 # Crawl-delay for respectful crawling
 Crawl-delay: 1
 
-# Disallow sensitive areas (none for this portfolio)
+# Disallow sensitive areas (none for this website)
 # Disallow: /admin/
 # Disallow: /api/
 

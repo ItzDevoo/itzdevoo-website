@@ -2,7 +2,7 @@
 
 ## Overview
 
-The personal portfolio website will be a modern, responsive single-page application that showcases professional information through a polished interface. The architecture follows a containerized approach using Docker for consistent deployment, with public accessibility through Cloudflare tunnels. The design emphasizes performance, accessibility, and mobile-first responsive design principles.
+The personal website website will be a modern, responsive single-page application that showcases professional information through a polished interface. The architecture follows a containerized approach using Docker for consistent deployment, with public accessibility through Cloudflare tunnels. The design emphasizes performance, accessibility, and mobile-first responsive design principles.
 
 ## Architecture
 

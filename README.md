@@ -1,6 +1,6 @@
-# ItzDevoo Portfolio
+# ItzDevoo Website
 
-A professional portfolio website built with modern web technologies and containerized with Docker. Deployed locally with public access through Cloudflare tunnels.
+A professional website built with modern web technologies and containerized with Docker. Deployed locally with public access through Cloudflare tunnels.
 
 ## 🌟 Features
 
@@ -90,10 +90,10 @@ This project uses a **three-branch strategy**:
 
 ```powershell
 # Build the image
-docker build -t itzdevoo-portfolio .
+docker build -t itzdevoo-website .
 
 # Run container
-docker run -p 8080:8080 itzdevoo-portfolio
+docker run -p 8080:8080 itzdevoo-website
 
 # Using Docker Compose (recommended)
 docker-compose up -d          # Start in background
@@ -159,7 +159,7 @@ itzdevoo-website/
 │   ├── build.ps1             # Build script
 │   └── README.md             # This file
 └── 📋 .kiro/specs/           # Project specifications
-    └── personal-portfolio-site/
+    └── personal-website-site/
         ├── requirements.md   # Project requirements
         ├── design.md         # Design document
         └── tasks.md          # Implementation tasks
@@ -201,7 +201,7 @@ itzdevoo-website/
 
 ## 🔄 Development Status
 
-Currently implementing JavaScript functionality and performance optimizations. See `.kiro/specs/personal-portfolio-site/tasks.md` for detailed progress.
+Currently implementing JavaScript functionality and performance optimizations. See `.kiro/specs/personal-website-site/tasks.md` for detailed progress.
 
 ## 📞 Contact
 

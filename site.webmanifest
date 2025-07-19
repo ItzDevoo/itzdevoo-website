@@ -1,7 +1,7 @@
 {
   "name": "ItzDevoo - Developer & Content Creator",
   "short_name": "ItzDevoo",
-  "description": "Professional portfolio of ItzDevoo showcasing development projects and content creation",
+  "description": "Professional website of ItzDevoo showcasing development projects and content creation",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
@@ -10,7 +10,7 @@
   "scope": "/",
   "lang": "en",
   "dir": "ltr",
-  "categories": ["portfolio", "developer", "technology"],
+  "categories": ["website", "developer", "technology"],
   "icons": [
     {
       "src": "/icon-192.png",
@@ -36,14 +36,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Desktop view of ItzDevoo portfolio"
+      "label": "Desktop view of ItzDevoo website"
     },
     {
       "src": "/screenshot-mobile.png",
       "sizes": "390x844",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Mobile view of ItzDevoo portfolio"
+      "label": "Mobile view of ItzDevoo website"
     }
   ],
   "shortcuts": [
